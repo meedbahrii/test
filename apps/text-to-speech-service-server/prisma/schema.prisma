@@ -1,0 +1,27 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Document {
+  audioItems Audio[]
+  content    String?
+  createdAt  DateTime @default(now())
+  file       Json?
+  id         String   @id @default(cuid())
+  title      String?
+  updatedAt  DateTime @updatedAt
+}
+
+model Audio {
+  audioFile  Json?
+  createdAt  DateTime  @default(now())
+  document   Document? @relation(fields: [documentId], references: [id])
+  documentId String?
+  id         String    @id @default(cuid())
+  updatedAt  DateTime  @updatedAt
+}
